@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NinetyNineCats</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body>
+  
+    <nav class="top-menu">
+    <% if logged_in? %>
+    Hello, <%= current_user.user_name %>
+    <div>
+    <form action="<%= session_url %>" method="post">
+      <input type="hidden" name ="_method" value="delete">
+      <input type="hidden" name ="authenticity_token" value="<%= form_authenticity_token %>">
+      <!-- authencity_token handled by rails, dont worry about it! (as longs as its included in forms)-->
+     
+        
+      <input type="submit" value="Log Out">
+      </form>
+      <% else %>
+        <a href="<%= new_session_url %>">Log In</a>
+        <a href="<%= new_user_url %>">Sign Up</a>
+      <% end %>
+
+      </div>
+      </nav>
+
+
+       <% if flash.now[:errors] %>
+    <ul>
+      <% flash.now[:errors].each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  <% end %>
+    <%= yield %>
+  </body>
+</html>
