@@ -1,0 +1,38 @@
+<h1><%= @post.title %></h1>
+<h2>By <%= @post.author.username %></h2>
+
+<h2>Content:</h2>
+<span><%= @post.content %></span> <br>
+<span><%= @post.url %></span>
+
+<h2>Subs</h2>
+
+<ul>
+<% @post.subs.each do |sub| %>
+    <li>
+    <a href="<%=sub_url(sub)%>"><%= sub.title %></a>
+    </li>
+<% end %>
+</ul>
+
+<h2>Comments</h2>
+<a href="<%=new_post_comment_url(@post.id)%>">Add a new comment!</a>
+
+<% unless @post.comments.empty? %> 
+<ul>
+
+<% @post.comments.where(parent_comment_id: nil).each do |comment| %>
+    <li>
+    <a href="<%=comment_url(comment)%>"><%= comment.content %></a>
+        <ul>
+            <% if comment.child_comments %>
+                <% comment.child_comments.each do |child| %>
+                    <li><a href="<%= comment_url(child) %>"><%= child.content %></a></li>
+                <% end %>
+            <% end %>
+        </ul>
+    </li>
+<% end %>
+</ul>
+<% end %>
+<a href="<%=edit_post_url(@post)%>">Edit</a>

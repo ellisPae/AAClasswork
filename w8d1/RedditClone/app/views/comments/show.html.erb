@@ -1,0 +1,3 @@
+<h3>Comment: <%= @comment.content %></h3>
+
+<%= render "form", parent_comment_id: @comment.id, action: :new, comment: @comment %>

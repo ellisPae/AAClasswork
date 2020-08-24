@@ -1,0 +1,27 @@
+<% if action == :edit %>
+    <% method_url = comment_url(comment) %>
+    <% verb = "patch" %>
+    <% button_text = "Save Comment" %>
+<% else %>
+    <% method_url = comments_url %>
+    <% verb = "post" %>
+    <% button_text = "Add Comment" %>
+<% end %>
+<% parent_comment_id ||= nil %>
+
+<form action="<%= method_url %>" method="post">
+    <input type="hidden" name="_method" value="<%= verb %>">
+    <%= auth_token %>
+    <input type="hidden" name="comment[post_id]" value="<%=post_id%>">
+    <% if parent_comment_id %>
+        <input type="hidden" name="comment[parent_comment_id]" value="<%= parent_comment_id %>">
+    <% end %>
+    <label for="comment-content">Body
+        <textarea name="comment[content]" cols="30" rows="10"><%= comment.content %></textarea>
+    </label>
+
+
+    <button type="submit"><%= button_text %></button>
+
+</form>
+

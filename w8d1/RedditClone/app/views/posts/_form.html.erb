@@ -1,0 +1,42 @@
+<% if action == :edit %>
+    <% method_url = post_url(post) %>
+    <% verb = "patch" %>
+    <% button_text = "Save Post" %>
+<% else %>
+    <% method_url = posts_url %>
+    <% verb = "post" %>
+    <% button_text = "Add Post" %>
+<% end %>
+
+
+
+<form action="<%= method_url %>" method="post">
+    <%= auth_token %>
+    <input type="hidden" name="_method" value="<%= verb %>">
+
+    <label for="title"> Title
+        <input type="text" name="post[title]" value="<%= @post.title %>">
+    </label>
+
+    <label for="url">URL
+        <input type="text" name="post[url]" value="<%= @post.url %>">
+    </label>
+
+    <label for="content">Content
+        <textarea name="post[content]" cols="30" rows="10" value="<%= @post.content %>"></textarea>
+    </label>
+    <input type="hidden" name="post[sub_ids][]" value="">
+    <% Sub.all.each do |sub| %>
+    <label for="">
+        <input 
+            type="checkbox" 
+            name="post[sub_ids][]" 
+            value="<%= sub.id %>"
+            <%= "checked" if @post.sub_ids.include?(sub.id) %>>
+        <%= sub.title %>
+    </label>
+    <br>
+    <% end %>
+
+    <button type="submit"><%= button_text %></button>
+</form>
